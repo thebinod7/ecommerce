@@ -22,7 +22,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle(APP_CONSTANT.NAME)
     .setDescription(APP_CONSTANT.DESCRIPTION)
-    .setVersion('1.0')
+    .setVersion(APP_CONSTANT.VERSION)
     .addBearerAuth(
       { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
       'JWT',
@@ -33,7 +33,7 @@ async function bootstrap() {
   SwaggerModule.setup('swagger', app, document);
 
   await app.listen(PORT);
-  Logger.log(`App running at port: ${PORT}`);
+  Logger.log(`API server running at port: ${PORT}`);
   Logger.log(`Swagger UI: http://localhost:${PORT}/swagger`);
 }
 bootstrap();

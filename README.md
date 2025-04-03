@@ -23,7 +23,7 @@ Step 3: Setup Postgres Database
   docker compose up -d
 ```
 
-Also add env variables
+Also add `.env` file and add following variables:
 
 ```bash
 PORT=5000

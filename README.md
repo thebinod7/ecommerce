@@ -57,3 +57,15 @@ http://localhost:5000
 ```
 
 \*Note: You can use `npm` `yarn` or `pnpm`
+
+## Tech Stack
+
+Backend - Node JS (Nest JS Framework) <br/>
+Database - Postgres with Prisma ORM <br/>
+Docker - To spinup postgres database <br>
+Language - TypeScript <br/>
+
+Frontend - Next JS <br/>
+State Management - Zustand <br/>
+Language - TypeScript <br />
+Styling - TailwindCss

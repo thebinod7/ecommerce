@@ -44,7 +44,7 @@ Step 4: Run Prisma Migration
    npx prisma migrate dev
 ```
 
-Step 4: Run Project
+Step 5: Run Project
 
 ```bash
    pnpm dev

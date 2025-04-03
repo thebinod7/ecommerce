@@ -55,14 +55,67 @@ export class OrderService {
     });
   }
 
-  createOrderItems(txn: PrismaClient, payload: any) {
-    return txn.orderItem.createMany({
+  async createOrderItems(txn: PrismaClient, payload: any) {
+    // Create order items
+    await txn.orderItem.createMany({
       data: payload,
     });
+    return this.updateProductStock(txn, payload);
   }
 
-  findAll() {
-    return this.prisma.order.findMany();
+  updateProductStock(txn: PrismaClient, payload: any) {
+    return Promise.all(
+      payload.map((item: any) =>
+        txn.product.update({
+          where: { id: item.productId },
+          data: {
+            stock: {
+              decrement: item.quantity,
+            },
+          },
+        }),
+      ),
+    );
+  }
+
+  async findAll() {
+    const rows = await this.prisma.order.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+      include: {
+        orderedBy: true,
+      },
+    });
+    if (!rows.length) return [];
+    const finalResult = [];
+    for (const r of rows) {
+      const suborders = await this.listOrderItemsByOrderId(r.id);
+      finalResult.push({
+        ...r,
+        suborders: suborders,
+      });
+    }
+    console.log('finalResult', finalResult);
+    return finalResult;
+  }
+
+  listOrderItemsByOrderId(orderId: number) {
+    return this.prisma.orderItem.findMany({
+      where: {
+        orderId,
+      },
+      include: {
+        product: {
+          select: {
+            name: true,
+            unitPrice: true,
+            imageUrl: true,
+            stock: true,
+          },
+        },
+      },
+    });
   }
 
   findOne(uuid: string) {

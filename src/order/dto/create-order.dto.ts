@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   IsArray,
   IsEnum,
-  IsObject,
+  IsNumber,
   IsOptional,
   IsString,
 } from 'class-validator';
@@ -26,6 +26,12 @@ export class CreateOrderDto {
   })
   @IsString()
   contactNumber: string;
+
+  @ApiProperty({
+    example: '5000',
+  })
+  @IsNumber()
+  totalAmount: number;
 
   @ApiProperty({
     example: 'COD',

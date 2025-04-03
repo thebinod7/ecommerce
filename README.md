@@ -1,4 +1,4 @@
-# E-Commerce App
+# E-Commerce Backend
 
 Online shopping made easy.
 

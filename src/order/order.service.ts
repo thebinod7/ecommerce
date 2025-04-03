@@ -96,7 +96,6 @@ export class OrderService {
         suborders: suborders,
       });
     }
-    console.log('finalResult', finalResult);
     return finalResult;
   }
 
@@ -116,6 +115,33 @@ export class OrderService {
         },
       },
     });
+  }
+
+  findUserByEmail(email: string) {
+    return this.prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+  }
+
+  async myOrders(userEmail: string) {
+    const user = await this.findUserByEmail(userEmail);
+    const rows = await this.prisma.order.findMany({
+      where: {
+        userId: user.id,
+      },
+    });
+    if (!rows.length) return [];
+    const finalResult = [];
+    for (const r of rows) {
+      const suborders = await this.listOrderItemsByOrderId(r.id);
+      finalResult.push({
+        ...r,
+        suborders: suborders,
+      });
+    }
+    return finalResult;
   }
 
   findOne(uuid: string) {
